@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors'
 import { json } from 'body-parser';
 import { currentUserRouter } from './routes/current-user';
 import { signinRouter } from './routes/signin';
@@ -16,7 +17,8 @@ app.use(signoutRouter);
 app.use(signupRouter);
 
 // catches any route paths not found and throws error
-app.all('*', () => {
+// need 'next' because async
+app.all('*', async (req, res) => {
   throw new NotFoundError()
 });
 
