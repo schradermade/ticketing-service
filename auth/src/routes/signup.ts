@@ -44,8 +44,10 @@ async (req: Request, res: Response) => {
   }, process.env.JWT_KEY!
 );
 
-  
   // Store it on session object
+  // session object will be turned into a string by cookie-session
+  // cookie-session middelware will then attempt to send cookie
+  // back to users browser inside reponse
   req.session = {
     jwt: userJwt
   }
