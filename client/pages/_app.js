@@ -4,10 +4,10 @@ import UniversalHeader from '../components/Header';
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
   return (
-<div>
-  <UniversalHeader currentUser={currentUser} />
-  <Component { ...pageProps } />
-</div>
+    <div>
+      <UniversalHeader currentUser={currentUser} />
+      <Component { ...pageProps } />
+    </div>
   )
 } 
 
