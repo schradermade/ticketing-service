@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: schradermade/client
+          image: schradermade/ticketing-client
 ---
 apiVersion: v1
 kind: Service
