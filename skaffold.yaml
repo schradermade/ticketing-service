@@ -16,7 +16,7 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: schradermade/client
+    - image: schradermade/ticketing-client
       context: client
       docker:
         dockerfile: Dockerfile
