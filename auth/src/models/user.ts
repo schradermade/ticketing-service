@@ -45,8 +45,8 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// anytime we save Document to database we  
-// will execute callback function 
+// anytime we save Document to database we
+// will execute callback function
 userSchema.pre('save', async function(done) {
   if (this.isModified('password')) {
     const hashed = await PasswordManager.toHash(this.get('password'));
@@ -56,6 +56,9 @@ userSchema.pre('save', async function(done) {
 })
 
 // how to add a fn to a model in mongoose
+// The entire goal of .build() was to allow TypeScript
+// to do some validation/type checking on the props were
+// trying to use to create new record
 userSchema.statics.build = (attrs: UserAttrs) => {
   return new User(attrs);
 }
