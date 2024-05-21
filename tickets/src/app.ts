@@ -2,7 +2,8 @@ import express from 'express';
 import 'express-async-errors'
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
-import { errorHandler, NotFoundError } from '@tickets-market/common';
+import { errorHandler, NotFoundError, currentUser } from '@tickets-market/common';
+import { createTicketRouter } from './routes/new';
 
 const app = express();
 // reason for this is traffic is being proxied to our
@@ -16,8 +17,11 @@ app.use(cookieSession({
   //   if test environment by setting secure=false
   secure: process.env.NODE_ENV !== 'test'
 }))
+app.use(currentUser);
 
-// catches any route paths not found and throws error
+app.use(createTicketRouter)
+
+// catches any method/route not found and throws error
 app.all('*', async (req, res) => {
   throw new NotFoundError()
 });
