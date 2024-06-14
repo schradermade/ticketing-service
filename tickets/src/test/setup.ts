@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { app } from '../app';
 import request from 'supertest';
 import jwt from 'jsonwebtoken';
+import { createHexObjectId } from './utils';
 
 declare global {
   var getAuthCookie: () => string[];
@@ -37,7 +38,7 @@ afterAll(async () => {
 global.getAuthCookie = () => {
   // build a JWT payload. { id, email }
   const payload = {
-    id: '12342923',
+    id: createHexObjectId(),
     email: 'test@test.com'
   }
   // Create the JWT
