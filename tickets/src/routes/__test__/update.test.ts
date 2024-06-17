@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { app } from '../../app';
-import mongoose from 'mongoose';
 import { createHexObjectId } from '../../test/utils';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('returns a 404 if the provided id does not exist', async () => {
   const id = createHexObjectId()
@@ -108,4 +108,31 @@ it('updates the ticket provided valid inputs', async () => {
 
     
 
+})
+
+it('publishes an event', async () => {
+  const cookie = global.getAuthCookie();
+  const title = 'Valid title 5';
+  const price = 5;
+  
+  // create the ticket
+  const response = await request(app)
+    .post('/api/tickets')
+    .set('Cookie', cookie)
+    .send({
+      title: 'Test title 3',
+      price: 23
+    })
+
+  // edit the ticket
+  await request(app)
+    .put(`/api/tickets/${response.body.id}`)
+    .set('Cookie', cookie)
+    .send({
+      title,
+      price
+    })
+    .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 })
