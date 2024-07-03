@@ -4,7 +4,8 @@ import {
   validateRequest, 
   NotFoundError, 
   requireAuth, 
-  NotAuthorizedError 
+  NotAuthorizedError, 
+  BadRequestError
 } from '@tickets-market/common'
 import { Ticket } from '../models/ticket';
 import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
@@ -31,9 +32,14 @@ router.put(
     throw new NotFoundError()
   }
 
+  if (ticket.orderId) {
+    throw new BadRequestError('Cannot edit a reserved ticket.');
+  }
+
   if (ticket.userId !== req.currentUser!.id) {
     throw new NotAuthorizedError()
   }
+
 
   // set new properties on the ticket
   // this ONLY makes updates to Document in memory
@@ -47,6 +53,7 @@ router.put(
   // emit update event
   new TicketUpdatedPublisher(natsWrapper.client).publish({
     id: ticket.id,
+    version: ticket.version,
     title: ticket.title,
     price: ticket.price,
     userId: ticket.userId

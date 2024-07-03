@@ -1,6 +1,5 @@
 import { NotFoundError, requireAuth, validateRequest } from '@tickets-market/common';
 import express, { Request, Response } from 'express';
-import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
 
 const router = express.Router();
