@@ -3,7 +3,6 @@ import { NotAuthorizedError, NotFoundError, requireAuth } from "@tickets-market/
 import { Order, OrderStatus } from "../models/order";
 import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
 import { natsWrapper } from "../nats-wrapper";
-import { Ticket } from "../models/ticket";
 
 const router = express.Router()
 
@@ -29,6 +28,7 @@ router.patch(
     // publishing an event sayigng this was cancelled
     new OrderCancelledPublisher(natsWrapper.client).publish({
         id: order.id,
+        version: order.id,
         ticket: {
           id: order.ticket.id
         }
