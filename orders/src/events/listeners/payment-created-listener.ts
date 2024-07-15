@@ -1,7 +1,7 @@
 import { Subjects, Listener, PaymentCreatedEvent, OrderStatus } from '@tickets-market/common';
-import { queueGroupName } from '../../../../payments/src/events/listeners/queue-group-name';
+import { queueGroupName } from './queue-group-name';
 import { Message } from 'node-nats-streaming';
-import { Order } from '../../../../payments/src/models/order';
+import { Order } from '../../models/order';
 
 export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
   subject: Subjects.PaymentCreated = Subjects.PaymentCreated;
